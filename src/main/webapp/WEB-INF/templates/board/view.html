@@ -1,76 +1,13 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<title>세미프로젝트</title>
-<style type="text/css">
-	/* 전체영역 스타일 */
-	#container {
-		width: 950px;
-		margin: 0 auto;
-		border: 1px solid red;
-	}
-	/* header 스타일 */
-	nav ul {
-		list-style-type: none;
-		padding-bottom: 20px;
-	}
-	nav ul li {
-		float: left;
-		margin-left: 100px; 
-	}
-	hr {
-		clear: both;
-		background: black;
-		height: 1px
-	}
-	
-	/* main 스타일 */
-	#main{
-		min-height: 550px;
-	}
-	
-	/* footer 스타일 */
-	footer p {text-align: center;}
-	
-	/* 링크 스타일 */
-	a {font-weight: bold;}
-	a:link{
-		text-decoration: none;
-		color: black;
-	}
-	a:visited{
-		text-decoration: none;
-		color: black;
-	}
-	a:hover{
-		text-decoration: underline;
-		color: red;
-	}
-	
-</style>
-</head>
-<body>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+layout:decorate="~{fragments/layout}">
 
-<div id="container">
-	<header>
-		<h1>스프링MVC 프로젝트 V1</h1>		
-		<nav>
-			<ul>
-				<li><a href="/">Home</a></li>
-				<li><a href="/join">회원가입</a></li>
-				<li><a href="/login">로그인</a></li>
-				<li><a href="/list">게시판</a></li>
-				<li><a href="/myinfo">회원정보</a></li>
-			</ul>
-		</nav>
-		<hr>
-	</header>
-	<div id="main"></div>
-	<footer>
-	<hr>
-	<p>Copyright &copy; 2022. oing. All rights reserved.</p>
-	</footer>
-</div>
-</body>
-</html>
+<th:block layout:fragment="mystyle"></th:block>
+
+<th:block layout:fragment="main">
+	<div id="main">
+		<h1>게시판 본문</h1>
+	</div>
+</th:block>
+
+<th:block layout:fragment="myscript"></th:block>

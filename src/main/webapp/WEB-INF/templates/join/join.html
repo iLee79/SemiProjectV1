@@ -4,15 +4,94 @@
 <meta charset="UTF-8">
 <title>세미프로젝트</title>
 <link th:href="@{/static/css/base.css}" rel="stylesheet">
+<style>
+	/* 회원가입폼에 대한 스타일 */
+	#join {
+		/* border: 1px solid blue; */
+		width: 300px;
+		margin: 0 auto;
+	}
+	#join div {margin-bottom: 10px;}
+	#join label {
+		display: inline-block;
+		width: 110px;	
+		text-align: right;
+		font-weight: bold;
+	}
+	#join input {padding: 3px;}
+	#okbtn {margin-left: 115px}
+</style>
 </head>
 <body>
 
 <div id="container">
 	<th:block th:include="layout/header"></th:block>
 	
-	<div id="main"></div>
+	<div id="main">
+		<h1>회원가입</h1>
+		<form name="join" id="join" action="">
+			<div>
+				<label for="uid">아이디</label>
+				<input type="text" name="userid" id="uid">
+			</div>
+			<div>
+				<label for="pwd">비밀번호</label>
+				<input type="password" name="passwd" id="pwd">
+			</div>
+			<div>
+				<label for="repwd">비밀번호 확인</label>
+				<input type="password" name="repwd" id="rpw">
+			</div>
+			<div>
+				<label for="nm">이름</label>
+				<input type="text" name="name" id="nm">
+			</div>
+			<div>
+				<label for="eml">이메일</label>
+				<input type="text" name="email" id="eml">
+			</div>
+			<div>
+				<button type="button" id="okbtn">입력완료</button>
+				<button type="reset">다시입력</button>
+			</div>
+		</form>
+	</div>
 	
 	<th:block th:include="layout/footer"></th:block>
 </div>
+
+<script>
+	var okbtn = document.getElementById("okbtn");
+	okbtn.addEventListener('click',checkjoinfrm);
+	
+	function checkjoinfrm(){
+		var uid = document.getElementById("uid");
+		var pwd = document.getElementById("pwd");
+		var rpw = document.getElementById("rpw");
+		var nm = document.getElementById("nm");
+		var eml = document.getElementById("eml");
+		
+		if (uid.value == '') alert('아이디를 입력하세요!');
+		else if (pwd.value == '') alert('비밀번호를 입력하세요!');
+		else if (rpw.value == '') alert('비밀번호 확인을 입력하세요!');
+		else if (pwd.value != rpw.value) alert('비밀번호가 일치하지 않습니다!');
+		else if (nm.value == '') alert('이름을 입력하세요!');
+		else if (eml.value == '') alert('이메일을 입력하세요!');
+		else {
+			var frm = document.join;
+			frm.method = 'post';
+			frm.submit();
+		}
+	}
+</script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
