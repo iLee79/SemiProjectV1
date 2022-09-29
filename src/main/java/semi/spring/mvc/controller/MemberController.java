@@ -16,7 +16,7 @@ public class MemberController {
 	@PostMapping("/join")
 	public String joinok() {
 		
-		return "redirect:/login";
+		return "redirect:/login"; 
 	}
 	
 	@GetMapping("/login")
