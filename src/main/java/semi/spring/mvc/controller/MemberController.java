@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -52,7 +53,9 @@ public class MemberController {
 	}
 	
 	@GetMapping("/myinfo")
-	public String myinfo() {
+	public String myinfo(Model m) {
+		m.addAttribute("mbr", msrv.readOneMember());
+		
 		
 		return "join/myinfo";
 	}

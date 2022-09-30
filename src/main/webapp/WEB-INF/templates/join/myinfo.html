@@ -4,13 +4,30 @@
 <meta charset="UTF-8">
 <title>세미프로젝트</title>
 <link th:href="@{/static/css/base.css}" rel="stylesheet">
+<style>
+	table {
+		border: 1px solid blue;
+		margin: 120px auto;		
+	}
+	th,td {padding: 10px;}
+	th {text-align: right;}
+</style>
 </head>
+
 <body>
 
 <div id="container">
 	<th:block th:include="layout/header"></th:block>
 	
-	<div id="main"></div>
+	<div id="main">
+		<h1>회원정보</h1>
+		<table>
+			<tr><th>아이디</th> <td th:text="${mbr.userid}"></td></tr>
+			<tr><th>이름</th> <td th:text="${mbr.name}"></td></tr>
+			<tr><th>이메일</th> <td th:text="${mbr.email}"></td></tr>
+			<tr><th>가입일</th> <td th:text="${mbr.regdate}"></td></tr>
+		</table>
+	</div>
 	
 	<th:block th:include="layout/footer"></th:block>
 </div>
