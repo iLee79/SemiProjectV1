@@ -73,7 +73,6 @@ public class MemberDAOImpl implements MemberDAO {
 		//return jdbcNamedTemplate.queryForObject(sql, Collections.emptyMap(), memberMapper); // RowMapper 가져와서 쓸때				
 		return jdbcTemplate.queryForObject(sql, null, memberMapper); // RowMapper 직접 구현시
 	}
-
 	
 	/*
 	// 콜백 메서드 정의 : mapRow

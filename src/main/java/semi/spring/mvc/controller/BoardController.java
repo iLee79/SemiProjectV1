@@ -23,7 +23,6 @@ public class BoardController {
 	@Autowired
 	private BoardService bsrv;
 	
-
 	@GetMapping("/list")
 	public String list(Model m) {
 		m.addAttribute("bdlist", bsrv.readBoard());
