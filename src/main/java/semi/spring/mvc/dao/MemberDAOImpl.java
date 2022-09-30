@@ -1,11 +1,11 @@
 package semi.spring.mvc.dao;
 
-import java.util.Collections;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -24,18 +24,17 @@ public class MemberDAOImpl implements MemberDAO {
 	private SimpleJdbcInsert simpleJdbcInsert;
 	private NamedParameterJdbcTemplate jdbcNamedTemplate;
 	
-	private RowMapper<MemberVO> memberMapper = BeanPropertyRowMapper.newInstance(MemberVO.class);
+	//private RowMapper<MemberVO> memberMapper = BeanPropertyRowMapper.newInstance(MemberVO.class); // RowMapper 가져와서 쓸때
+	
 	
 	public MemberDAOImpl(DataSource dataSource) {
-		simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("member").usingColumns("userid","passwd","name","email");
+		simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("member").usingColumns("userid","name","email","regdate");
 		
 		jdbcNamedTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
 	
 	@Override
 	public int insertMember(MemberVO mvo) {
-//		System.out.println("bdaoImpl:"+bvo);
-		
 		SqlParameterSource params = new BeanPropertySqlParameterSource(mvo);
 		
 		return simpleJdbcInsert.execute(params);
@@ -58,7 +57,29 @@ public class MemberDAOImpl implements MemberDAO {
 	public MemberVO selectOneMember() {
 		String sql = "select userid,name,email,regdate from member where mno=1";
 		
-		return jdbcNamedTemplate.queryForObject(sql, Collections.emptyMap(), memberMapper);
+		RowMapper<MemberVO> memberMapper = new MemberRowMapper(); // RowMapper 직접 구현시 
+		
+		//return jdbcNamedTemplate.queryForObject(sql, Collections.emptyMap(), memberMapper); // RowMapper 가져와서 쓸때				
+		return jdbcTemplate.queryForObject(sql, null, memberMapper); // RowMapper 직접 구현시
 	}
 
+	// 콜백 메서드 정의 : mapRow
+	// RowMapper 직접 구현시
+	private class MemberRowMapper implements RowMapper<MemberVO>{
+
+		@Override
+		public MemberVO mapRow(ResultSet rs, int num) throws SQLException {
+			MemberVO m = new MemberVO();
+			
+			m.setUserid(rs.getString("userid"));
+			m.setName(rs.getString("name"));
+			m.setEmail(rs.getString("email"));
+			m.setRegdate(rs.getString("regdate"));
+			
+			return m;
+		}
+		
+	}
 }
+
+
