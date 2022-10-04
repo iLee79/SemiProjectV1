@@ -8,7 +8,7 @@ public interface BoardService {
 
 	boolean newBoard(BoardVO bvo);
 
-	List<BoardVO> readBoard();
+	List<BoardVO> readBoard(int snum);
 
 	BoardVO readOneBoard(String bno);
 

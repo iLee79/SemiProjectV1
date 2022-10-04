@@ -26,9 +26,28 @@ public class BoardController {
 	@Autowired
 	private BoardService bsrv;
 	
+	/* 페이징 처리 */
+	/* 페이지당 게시물 수 perPage : 25
+	 * 총페이지수 : 전체게시물수/페이지당게시물수
+	 * 총페이지수 pages = ceil(getTotalPage / perPage)
+	 * ex) 2=50/25, 3=51/25
+	 * 
+	 * 페이지별 읽어올 게시글 범위
+	 * 총 게시글이 55건이라 할때
+	 * 1page :  1번째~25번째 게시글 읽어옴
+	 * 2page : 26번째~50번째 게시글 읽어옴
+	 * 3page : 51번째~75번째 게시글 읽어옴
+	 * ipage : m번째 ~ n번째 게시글 읽어옴 
+	 * m=(i-1)*25+1
+	 * 
+	 */
 	@GetMapping("/list")
-	public String list(Model m) {
-		m.addAttribute("bdlist", bsrv.readBoard());
+	public String list(Model m, String cpg) {
+		
+		int perPage = 25;
+		int snum = (Integer.parseInt(cpg) - 1) * perPage; 
+				
+		m.addAttribute("bdlist", bsrv.readBoard(snum));
 				
 		return "board/list";
 	}
