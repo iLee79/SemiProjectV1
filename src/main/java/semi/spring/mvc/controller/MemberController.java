@@ -1,5 +1,7 @@
 package semi.spring.mvc.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,15 +49,29 @@ public class MemberController {
 	}
 	
 	@PostMapping("/login")
-	public String loginok() {
-			
-		return "redirect:/myinfo";
+	public String loginok(MemberVO mvo, HttpSession sess) {
+		String returnPage = "join/lgnfail";
+		
+		if (msrv.checkLogin(mvo)) {
+			sess.setAttribute("m",mvo); // 회원정보를 세션에 저장
+			returnPage = "redirect:/myinfo";
+		}
+		
+		return returnPage;
+	}
+	
+	@GetMapping("/logout")
+	public String logout(HttpSession sess) {
+		
+		sess.invalidate();
+		
+		return "redirect:/";
 	}
 	
 	@GetMapping("/myinfo")
 	public String myinfo(Model m) {
-		m.addAttribute("mbr", msrv.readOneMember());
 		
+		m.addAttribute("mbr", msrv.readOneMember());		
 		
 		return "join/myinfo";
 	}
