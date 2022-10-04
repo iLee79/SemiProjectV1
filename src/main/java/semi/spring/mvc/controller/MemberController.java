@@ -23,11 +23,17 @@ public class MemberController {
 	// 로그 유형 : trace, debug, info, warn, error
 	
 
+	// 비로그인 -> join/join
+	// 로그인 -> join/myiinfo
 	@GetMapping("/join")
-	public String join() {
-		LOGGER.info("join 호출!");
+	public String join(HttpSession sess) {
+		String returnPage = "join/join";
+		//LOGGER.info("join 호출!");
+		if (sess.getAttribute("m") != null) {
+			returnPage = "redirect:/myinfo";
+		}
 		
-		return "join/join";
+		return returnPage;
 	}
 	
 	@PostMapping("/join")
