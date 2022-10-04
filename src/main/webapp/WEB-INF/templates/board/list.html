@@ -48,16 +48,23 @@ layout:decorate="~{fragments/layout}">
 			</colgroup>
 			<thead>
 				<!-- <tr><td colspan="5" class="newbtn"><button type="button" id="newbtn">글쓰기</button></td></tr> -->
+				
 				<!-- 
 				<tr><td th:if="${#strings.isEmpty(session.m)}" colspan="5" class="newbtn"><button type="button" id="newbtn" disabled>글쓰기</button></td></tr>
 				<tr><td th:unless="${#strings.isEmpty(session.m)}" colspan="5" class="newbtn"><button type="button" id="newbtn">글쓰기</button></td></tr>
 				 -->
+				 
+				<!-- <tr><td colspan="5" class="newbtn">
+					<div th:if="${session.m != null}"><button type="button" id="newbtn">글쓰기</button></div>
+					<div th:unless="${session.m != null}">&nbsp;</div>					
+				</td></tr> -->
+				
 				<!-- 1. not session.isEmpty() -->
 				<!-- 2. not not #strings.isEmpty(session.m) -->
 				<!-- 3. session.m != null -->
+				
 				<tr><td colspan="5" class="newbtn">
-					<div th:if="${session.m != null}"><button type="button" id="newbtn">글쓰기</button></div>
-					<div th:unless="${session.m != null}">&nbsp;</div>					
+					<div><button type="button" id="newbtn" th:disabled="${session.m == null}">글쓰기</button></div>										
 				</td></tr>
 				
 				<tr>
