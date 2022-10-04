@@ -44,7 +44,7 @@ layout:decorate="~{fragments/layout}">
 			</div>
 			<div>
 				<label for="uid">작성자</label>
-				<input type="text" name="userid" id="uid" value="abc123" readonly="readonly">
+				<input type="text" name="userid" id="uid" th:value="${session.m.userid}" readonly="readonly">
 			</div>
 			<div>
 				<label for="cnt" class="dragup">본문</label>
