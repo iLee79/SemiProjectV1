@@ -26,8 +26,8 @@ public class BoardController {
 	@Autowired
 	private BoardService bsrv;
 	
-	/* 페이징 처리 */
-	/* 페이지당 게시물 수 perPage : 25
+	/* 페이징 처리
+	 * 페이지당 게시물 수 perPage : 25
 	 * 총페이지수 : 전체게시물수/페이지당게시물수
 	 * 총페이지수 pages = ceil(getTotalPage / perPage)
 	 * ex) 2=50/25, 3=51/25
@@ -37,17 +37,38 @@ public class BoardController {
 	 * 1page :  1번째~25번째 게시글 읽어옴
 	 * 2page : 26번째~50번째 게시글 읽어옴
 	 * 3page : 51번째~75번째 게시글 읽어옴
+	 * ...
 	 * ipage : m번째 ~ n번째 게시글 읽어옴 
-	 * m=(i-1)*25+1
+	 * m=(i-1)*25+1 
+	 * 
+	 * 현재페이지에 따라서 보여줄 페이지 블럭 결정
+	 * ex) 총페이지가 27일때
+	 * cpg = 1 : 1 2 3 4 5 6 7 8 10
+	 * cpg = 5 : 1 2 3 4 5 6 7 8 10
+	 * cpg = 6 : 1 2 3 4 5 6 7 8 10
+	 * cpg = 10 : 1 2 3 4 5 6 7 8 10
+	 * cpg = 11 : 11 12 13 14 15 16 17 18 20
+	 * cpg = 17 : 11 12 13 14 15 16 17 18 20
+	 * cpg = 23 : 21 22 23 24 25 26 27
+	 * cpg = 26 : 21 22 23 24 25 26 27
+	 * ...
+	 * cpg = n  : ?+0 ?+1 ?+2 ... ?+9
+	 * stpgn = (int(cpg-1)/10)*10 + 1
 	 * 
 	 */
+	
 	@GetMapping("/list")
 	public String list(Model m, String cpg) {
 		
 		int perPage = 25;
-		int snum = (Integer.parseInt(cpg) - 1) * perPage; 
+		if (cpg == null || cpg.equals("")) cpg = "1";
+		int cpage = Integer.parseInt(cpg);
+		int snum = (cpage - 1) * perPage; 
+		int stpgn = ((cpage - 1)/10)*10 + 1;
 				
 		m.addAttribute("bdlist", bsrv.readBoard(snum));
+		m.addAttribute("stpgn", stpgn);
+		//m.addAttribute("cpg", Integer.parseInt(cpg));
 				
 		return "board/list";
 	}
