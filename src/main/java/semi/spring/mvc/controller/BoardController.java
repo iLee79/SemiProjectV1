@@ -64,11 +64,14 @@ public class BoardController {
 		if (cpg == null || cpg.equals("")) cpg = "1";
 		int cpage = Integer.parseInt(cpg);
 		int snum = (cpage - 1) * perPage; 
-		int stpgn = ((cpage - 1)/10)*10 + 1;
+		int stpgn = ((cpage - 1)/10)*10 + 1;		
 				
+		System.out.println(bsrv.readCountBoard());
+		m.addAttribute("pages", bsrv.readCountBoard());
 		m.addAttribute("bdlist", bsrv.readBoard(snum));
 		m.addAttribute("stpgn", stpgn);
 		//m.addAttribute("cpg", Integer.parseInt(cpg));
+		
 				
 		return "board/list";
 	}

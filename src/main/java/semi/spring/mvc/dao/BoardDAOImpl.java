@@ -63,7 +63,7 @@ public class BoardDAOImpl implements BoardDAO {
 		
 		Map<String, Object> params = new HashMap<>();
 		params.put("snum", snum);
-		
+				
 		return jdbcNamedTemplate.query(sql,params, boardMapper);
 	}
 
@@ -78,5 +78,13 @@ public class BoardDAOImpl implements BoardDAO {
 		sql = "select bno,title,userid,regdate,views,contents from board where bno=?";
 		
 		return jdbcTemplate.queryForObject(sql, param, boardMapper);
+	}
+
+	@Override
+	public int selectCountBoard() {
+		int pages = 0;
+		String sql = "select CEIL(count(bno)/25) pages from board";
+		
+		return jdbcTemplate.queryForObject(sql, null, Integer.class);
 	}
 }

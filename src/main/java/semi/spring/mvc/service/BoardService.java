@@ -12,4 +12,6 @@ public interface BoardService {
 
 	BoardVO readOneBoard(String bno);
 
+	int readCountBoard();
+
 }
