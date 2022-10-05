@@ -58,20 +58,19 @@ public class BoardController {
 	 */
 	
 	@GetMapping("/list")
-	public String list(Model m, String cpg) {
+	public String list(Model m, String cpg, String fkey, String fval) {
 		
 		int perPage = 25;
 		if (cpg == null || cpg.equals("")) cpg = "1";
+		if (fkey == null) fkey = "";
 		int cpage = Integer.parseInt(cpg);
 		int snum = (cpage - 1) * perPage; 
 		int stpgn = ((cpage - 1)/10)*10 + 1;		
-				
-		System.out.println(bsrv.readCountBoard());
-		m.addAttribute("pages", bsrv.readCountBoard());
-		m.addAttribute("bdlist", bsrv.readBoard(snum));
-		m.addAttribute("stpgn", stpgn);
-		//m.addAttribute("cpg", Integer.parseInt(cpg));
 		
+		m.addAttribute("pages", bsrv.readCountBoard(fkey, fval));
+		m.addAttribute("bdlist", bsrv.readBoard(fkey, fval, snum));
+		m.addAttribute("stpgn", stpgn);
+		//m.addAttribute("cpg", Integer.parseInt(cpg));		
 				
 		return "board/list";
 	}

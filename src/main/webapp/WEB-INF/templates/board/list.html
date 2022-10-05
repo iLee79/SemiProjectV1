@@ -31,6 +31,11 @@ layout:decorate="~{fragments/layout}">
 		td:nth-of-type(2) {
 			text-align: left;			
 		}
+		.alignleft {
+			text-align:left;
+			display: inline-block;
+			width: 90%;
+		}
 		
 	</style>
 </th:block>
@@ -64,7 +69,16 @@ layout:decorate="~{fragments/layout}">
 				<!-- 3. session.m != null -->
 				
 				<tr><td colspan="5" class="newbtn">
-					<div><button type="button" id="newbtn" th:disabled="${session.m == null}">글쓰기</button></div>										
+					<span class="alignleft" th:if="${not session.isEmpty()}">
+						<select name="fkey" id="fkey">
+							<option value="title">제목</option>
+							<option value="userid">작성자</option>
+							<option value="contents">본문내용</option>
+						</select>
+						<input type="text" name="fval" id="fval">
+						<button type="button" id="findbtn">검색하기</button>
+					</span>
+						<button type="button" id="newbtn" th:disabled="${session.m == null}">글쓰기</button>										
 				</td></tr>
 				
 				<tr>
@@ -113,9 +127,27 @@ layout:decorate="~{fragments/layout}">
 		let newbtn = document.getElementById('newbtn');
 		newbtn.addEventListener('click', go2new);
 		
+		// emcscript 2020 지원시 - 최신 브라우저 사용시
+		// Cannot read properties of null 세련되게 처리하기
+		// optional chaining 사용 -> 객체명?.addEventListener
+		// 검색시 요청 url : /list?fkey=title&fval=테스트
+		let findbtn = document.getElementById('findbtn');		 
+		findbtn?.addEventListener('click', () => { // findbtn 뒤에 ? 붙은거 확인!
+			let fkey = document.querySelector('#fkey');
+			let fval = document.querySelector('#fval');
+			if (fval.value == '') {
+				alert('검색할 내용을 입력하세요!');
+			} else{
+				let qry = '?fkey=' + fkey.value;
+				qry += '&fval=' + fval.value;
+				location.href = '/list' + qry;
+			}		
+		});
+		
 		function go2new(){
 			location.href = '/write';
 		}
+		
 	</script>
 
 </th:block>

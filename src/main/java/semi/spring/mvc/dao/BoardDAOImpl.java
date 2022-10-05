@@ -57,14 +57,29 @@ public class BoardDAOImpl implements BoardDAO {
 	}
 	*/
 	
+	// 동적 질의문
+	// 조건에 따라 실행할 질의문의 형태가 바뀌는 것
+	// 제목으로 검색 : select * from board where title=?
+	// 작성자로 검색 : select * from board where userid=?
+	// 본문으로 검색 : select * from board where contents=?
+	// => select * from ? where ?=? (실행불가) : 테이블명, 컬럼명은 매개변수화 할 수 없음
+	// 
 	@Override
-	public List<BoardVO> selectBoard(int snum) {
-		String sql = "select bno,title,userid,regdate,views from board order by bno desc limit :snum,25";
+	public List<BoardVO> selectBoard(String fkey, String fval, int snum) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("select bno,title,userid,regdate,views from board ");
+		
+		if (fkey.equals("title")) sql.append(" where title like :fval");
+		else if (fkey.equals("userid")) sql.append(" where userid like :fval");
+		else if (fkey.equals("contents")) sql.append(" where contents like :fval");
+		
+		sql.append(" order by bno desc limit :snum,25");
 		
 		Map<String, Object> params = new HashMap<>();
 		params.put("snum", snum);
+		params.put("fval", "%"+fval+"%");
 				
-		return jdbcNamedTemplate.query(sql,params, boardMapper);
+		return jdbcNamedTemplate.query(sql.toString(), params, boardMapper);
 	}
 
 	@Override
@@ -81,7 +96,7 @@ public class BoardDAOImpl implements BoardDAO {
 	}
 
 	@Override
-	public int selectCountBoard() {
+	public int selectCountBoard(String fkey, String fval) {
 		int pages = 0;
 		String sql = "select CEIL(count(bno)/25) pages from board";
 		
