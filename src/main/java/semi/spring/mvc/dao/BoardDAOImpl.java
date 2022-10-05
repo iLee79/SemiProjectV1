@@ -1,5 +1,6 @@
 package semi.spring.mvc.dao;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -77,7 +78,7 @@ public class BoardDAOImpl implements BoardDAO {
 		
 		Map<String, Object> params = new HashMap<>();
 		params.put("snum", snum);
-		params.put("fval", "%"+fval+"%");
+		params.put("fval", "%" + fval + "%");
 				
 		return jdbcNamedTemplate.query(sql.toString(), params, boardMapper);
 	}
@@ -97,9 +98,19 @@ public class BoardDAOImpl implements BoardDAO {
 
 	@Override
 	public int selectCountBoard(String fkey, String fval) {
-		int pages = 0;
-		String sql = "select CEIL(count(bno)/25) pages from board";
+		//int pages = 0;
+		StringBuilder sql = new StringBuilder();
+		sql.append("select CEIL(count(bno)/25) pages from board ");
 		
-		return jdbcTemplate.queryForObject(sql, null, Integer.class);
+		if (fkey.equals("title")) sql.append(" where title like :fval");
+		else if (fkey.equals("userid")) sql.append(" where userid like :fval");
+		else if (fkey.equals("contents")) sql.append(" where contents like :fval");
+		
+		Map<String, Object> params = new HashMap<>();
+		params.put("fval", "%" + fval + "%");	
+		
+		//String sql = "select CEIL(count(bno)/25) pages from board";
+		
+		return jdbcNamedTemplate.queryForObject(sql.toString(), params, Integer.class);
 	}
 }
