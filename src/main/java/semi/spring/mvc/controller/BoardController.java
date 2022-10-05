@@ -63,7 +63,7 @@ public class BoardController {
 		int perPage = 25;
 		if (cpg == null || cpg.equals("")) cpg = "1";
 		if (fkey == null) fkey = "";
-		if (fval == null) fkey = "";
+		if (fval == null) fval = "";
 		int cpage = Integer.parseInt(cpg);
 		int snum = (cpage - 1) * perPage; 
 		int stpgn = ((cpage - 1)/10)*10 + 1;		
