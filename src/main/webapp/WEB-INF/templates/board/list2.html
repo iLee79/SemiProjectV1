@@ -1,0 +1,114 @@
+
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+layout:decorate="~{fragments/layout}">
+
+<th:block layout:fragment="mystyle">
+<style>
+	table { border: 1px solid blue;  width: 75%; 
+			margin:0 auto; border-collapse: collapse; }
+	th, td { border: 1px solid black; 
+			text-align: center; padding: 10px }	
+	td:nth-of-type(2) { text-align: left }
+			
+	.newbtn { border: none; text-align: right } 
+	.pgnav { border: none  }	
+	.cpage { color: red; font-weight: bold;
+			font-size: 25px }
+	.alignleft { display: inline-block; width:89%; text-align: left; }
+</style>
+</th:block>
+
+<th:block layout:fragment="main">	
+	<div id="main" th:with="cpg=${(param.cpg==null)? 1:T(java.lang.Integer).parseInt(param.cpg)}">
+		<h1 th:with="qry=(${#httpServletRequest.queryString})"> 
+		게시판 목록([[${stpgn}]] / [[${pages}]] / [[${param.fkey}]] / [[${param.fval}]] / [[${qry}]] )</h1>
+		
+		<table>
+			<colgroup>
+				<col style="width:10%">
+				<col style="">
+				<col style="width:15%">
+				<col style="width:15%">
+				<col style="width:10%">
+			</colgroup>
+			<thead>
+				<tr><td colspan="5" class="newbtn">
+					<span class="alignleft" th:if="${session.m != null}">
+						<select name="fkey" id='fkey'>
+							<option value="title">제목</option>
+							<option value="userid">작성자</option>
+							<option value="contents">본문</option>
+						</select>
+						<input type="text" name="fval" id="fval">
+						<button type="button" id="findbtn">검색하기</button>
+					</span>
+					<button type="button" id="newbtn" th:disabled="${session.m == null}">새글쓰기</button>
+				</td></tr>
+				<tr><th>번호</th><th>제목</th><th>작성자</th>
+					<th>작성일</th><th>조회</th></tr>
+			</thead>
+			<tbody>
+				
+				<tr th:each="b: ${bdlist}">
+					<td th:text="${b.bno}"></td>
+					<td><a th:text="${b.title}" th:href="@{/view(bno=${b.bno})}"></a></td>
+					<td th:text="${b.userid}"></td>
+					<td th:text="${#strings.substring(b.regdate,0,10)}"></td>
+					<td th:text="${b.views}"></td>
+
+				</tr>
+				
+				<tr>
+					<td colspan="5" class="pgnav">
+                        <a th:if="${cpg != 1}" th:href="@{'/list?cpg=1' + ${fqry}}">[처음]</a>
+                        <a th:if="${cpg > 1}" th:href="@{'/list?cpg=' + ${cpg - 1} + ${fqry}}">[이전]</a>
+                        <a th:if="${cpg > 10}" th:href="@{'/list?cpg=' + ${cpg - 10} + ${fqry}}">[이전10]</a>
+                        <th:block th:each="i: ${#numbers.sequence(0,9)}">
+                         	<th:block th:if="${(stpgn + i) <= pages}">  
+	                            <span th:text="${stpgn + i}" th:if="${cpg == (stpgn+i)}" class="cpage"></span>
+	                            <span th:unless="${cpg == (stpgn+i)}">
+	                                <a th:href="@{/list(cpg=${stpgn + i},fkey=${param.fkey},fval=${param.fval})}">[[${stpgn + i}]]</a>
+	                            </span>
+							</th:block>	                            
+                         </th:block>  
+                        <a th:if="${cpg < pages}" th:href="@{'/list?cpg=' + ${cpg + 1} + ${fqry}}">[다음]</a> 
+                        <a th:if="${cpg <= pages-10}" th:href="@{'/list?cpg=' + ${cpg + 10} + ${fqry}}">[다음10]</a> 
+                        <a th:if="${cpg != pages}" th:href="@{'/list?cpg=' + ${pages} + ${fqry}}">[끝]</a>
+                    </td>
+				</tr>
+			</tbody>
+		</table>
+	</div>	
+</th:block>
+
+<th:block layout:fragment="myscript">
+<script>
+	let newbtn = document.getElementById("newbtn");
+	newbtn.addEventListener('click', go2new);
+	
+	// emcascript 2020 지원시 - 최신 브라우저 사용시
+	// Cannot read properties of null 세련되게 처리하기
+	// optional chaining 사용 => 객체명?.addEventListener
+	// 검색시 요청 url : /list?fkey = title&fval='테스트'
+	let findbtn = document.getElementById("findbtn");
+	findbtn?.addEventListener('click', () => {
+		let fkey = document.querySelector('#fkey');
+		let fval = document.querySelector('#fval');
+		if (fval.value == '') alert('검색할 내용을 작성하세요~')
+		else { 
+			let qry = '?fkey=' + fkey.value ;
+			qry += '&fval=' + fval.value;
+			location.href = '/list' + qry;
+		};
+	});	
+	
+	function go2new(){
+		location.href='/write';
+	}
+	
+	function go2find(){
+		location.href='/find';
+	}
+</script>
+</th:block>

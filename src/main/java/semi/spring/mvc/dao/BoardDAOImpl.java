@@ -113,4 +113,13 @@ public class BoardDAOImpl implements BoardDAO {
 		
 		return jdbcNamedTemplate.queryForObject(sql.toString(), params, Integer.class);
 	}
+
+	@Override
+	public int deleteBoard(String bno) {
+		String sql = "delete from board where bno=?";
+		
+		Object[] param = {bno}; 
+		
+		return jdbcTemplate.update(sql,param);
+	}
 }

@@ -14,4 +14,6 @@ public interface BoardDAO {
 
 	int selectCountBoard(String fkey, String fval);
 
+	int deleteBoard(String bno);
+
 }

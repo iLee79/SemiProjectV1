@@ -43,7 +43,7 @@ layout:decorate="~{fragments/layout}">
 <th:block layout:fragment="main">
 	<div id="main" th:with="cpg=${(param.cpg == null or #strings.equals(param.cpg,''))? 1: T(java.lang.Integer).parseInt(param.cpg)}">
 		<h1 th:with="qry=(${#httpServletRequest.queryString})">
-			게시판 목록([[${param.cpg}]] / [[${stpgn}]] / [[${pages}]] / [[${param.fval}]] / [[${fqry}]])
+			게시판 목록([[${param.cpg}]] / [[${stpgn}]] / [[${pages}]] / [[${param.fval}]] / [[${fqry}]] / [[${qry}]])
 		</h1>
 		<table>
 			<colgroup>
@@ -107,7 +107,7 @@ layout:decorate="~{fragments/layout}">
 						<a th:if="${cpg > 1}" th:href="@{'/list?cpg=' + ${cpg - 1} + ${fqry}}">[이전]</a>
 						<th:block th:each="i: ${#numbers.sequence(0,9)}">
 							<th:block th:if="${stpgn + i <= pages}">
-								<span th:text="${stpgn + i}" th:if="${cpg == (stpgn+i)}" class="cpage"></span>
+								<span th:text="${stpgn + i}" th:if="${cpg == (stpgn + i)}" class="cpage"></span>
 								<span th:unless="${cpg == (stpgn+i)}">
 									<!-- <a th:if="${stpgn + i <= pages}" th:href="@{/list(cpg=${stpgn + i})}">[[${stpgn + i}]]</a> -->
 									<a th:href="@{'/list?cpg=' + ${stpgn + i} + ${fqry}}">[[${stpgn + i}]]</a>

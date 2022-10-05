@@ -101,6 +101,19 @@ public class BoardController {
 		bsrv.newBoard(bvo);
 		
 		return "redirect:/list";
-	}		
+	}	
+	
+	@GetMapping("/del")
+	public String remove(HttpSession sess, String bno) {
+		String returnPage = "redirect:/list"; 
+		
+		if (sess.getAttribute("m") == null) {
+			returnPage = "redirect:/login";
+		} else {
+			bsrv.removeBoard(bno);
+		}
+		
+		return returnPage;
+	}
 	
 }
