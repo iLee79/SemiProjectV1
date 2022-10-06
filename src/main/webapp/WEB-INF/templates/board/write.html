@@ -27,10 +27,17 @@ layout:decorate="~{fragments/layout}">
 		}
 		.dragup {
 			vertical-align: top;
+		}	
+		.pushright {
+			margin-left: 115px;
+		}	
+		.danger {
+			color: red;
+			font-weight: bold;
 		}
 		
-		
 	</style>
+	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 </th:block>
 
@@ -40,7 +47,7 @@ layout:decorate="~{fragments/layout}">
 		<form name="boardfrm" id="boardfrm">
 			<div>
 				<label for="tlt">제목</label>
-				<input type="text" name="title" id="tlt">
+				<input type="text" name="title" id="tlt" th:value="${(bvo == null)}? '': ${bvo.title}">
 			</div>
 			<div>
 				<label for="uid">작성자</label>
@@ -48,8 +55,13 @@ layout:decorate="~{fragments/layout}">
 			</div>
 			<div>
 				<label for="cnt" class="dragup">본문</label>
-				<textarea cols="45" rows="7" name="contents" id="cnt"></textarea>
+				<textarea cols="45" rows="7" name="contents" id="cnt" th:text="${(bvo == null)}? '': ${bvo.contents}"></textarea>
 			</div>
+						
+			<div class="g-recaptcha pushright" data-sitekey="6LfR9FoiAAAAAFk9r_f8HPf9fqLTsplJ-HEX8HKk"></div>
+			<span class="pushright danger" th:text="${msg}"></span>
+			<input type="hidden" name="gcaptcha">
+			
 			<div>
 				<button type="button" id="bdokbtn">입력완료</button>
 				<button type="reset">다시입력</button>
@@ -67,21 +79,12 @@ layout:decorate="~{fragments/layout}">
 			let frm = document.boardfrm;
 			if (frm.title.value == '') alert('제목을 작성해주세요');
 			else if (frm.contents.value == '') alert('본문을 작성해주세요');
+			else if (grecaptcha.getResponse() == '') alert('자동가입방지를 클릭해주세요.');
 			else {
+				frm.gcaptcha.value = grecaptcha.getResponse();
 				frm.method = 'post';
 				frm.submit();
 			}
 		}
 	</script>
 </th:block>
-
-
-
-
-
-
-
-
-
-
-
