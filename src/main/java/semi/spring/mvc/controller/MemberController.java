@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import semi.spring.mvc.service.MemberService;
 import semi.spring.mvc.vo.MemberVO;
@@ -89,4 +90,27 @@ public class MemberController {
 		return returnPage;
 	}
 	
+	// 아이디 중복검사 - REST api 이용
+	@ResponseBody
+	@GetMapping("/checkuid")
+	public String checkuid(String uid) {
+		String result = "잘못된 방식으로 호출하였습니다!!";
+		if (uid != null || !uid.equals("")) {
+			result = msrv.checkUid(uid);
+		}
+		
+		return result;
+	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+

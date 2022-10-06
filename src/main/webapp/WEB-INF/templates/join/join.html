@@ -33,6 +33,7 @@
 			<div>
 				<label for="uid">아이디</label>
 				<input type="text" name="userid" id="uid">
+				<span id="chkmsg"></span>
 			</div>
 			<div>
 				<label for="pwd">비밀번호</label>
@@ -41,6 +42,7 @@
 			<div>
 				<label for="repwd">비밀번호 확인</label>
 				<input type="password" name="repwd" id="rpw">
+				<span id="pwdmsg"></span>
 			</div>
 			<div>
 				<label for="nm">이름</label>
@@ -50,6 +52,7 @@
 				<label for="eml">이메일</label>
 				<input type="text" name="email" id="eml">
 			</div>
+			<input type="hidden" name="chkuid" value="no">
 			<div>
 				<button type="button" id="okbtn">입력완료</button>
 				<button type="reset">다시입력</button>
@@ -61,7 +64,32 @@
 </div>
 
 <script>
-	var okbtn = document.getElementById("okbtn");
+	// 아이디 중복검사
+	// /checkuid?uid=???를 이용해서 중복여부를 확인
+	let userid = document.querySelector("#uid");
+	userid.addEventListener('blur', ()=>{
+		let qry = '?uid=' + userid.value;
+		fetch('/checkuid' + qry) // ajax 호출
+			.then(response => response.text()) // 결과받음
+			.then(text => checkUserid(text));  // 함수에 넘김
+	});
+	
+	function checkUserid(result){
+		let msg = document.querySelector('#chkmsg');
+		msg.style.marginLeft = '115px';
+				
+		if (result == '1'){
+			msg.innerHTML = '사용불가 아이디입니다!';
+			msg.style.color = 'red';
+			document.join.chkuid.value = 'no';
+		} else if (result == '0'){
+			msg.innerHTML = '사용가능 아이디입니다!';
+			msg.style.color = 'blue';
+			document.join.chkuid.value = 'yes';
+		}
+	}
+	
+	var okbtn = document.getElementById("okbtn");	
 	okbtn.addEventListener('click',checkjoinfrm);
 	
 	function checkjoinfrm(){
@@ -70,6 +98,7 @@
 		var rpw = document.getElementById("rpw");
 		var nm = document.getElementById("nm");
 		var eml = document.getElementById("eml");
+		var frm = document.join;
 		
 		if (uid.value == '') alert('아이디를 입력하세요!');
 		else if (pwd.value == '') alert('비밀번호를 입력하세요!');
@@ -77,8 +106,8 @@
 		else if (pwd.value != rpw.value) alert('비밀번호가 일치하지 않습니다!');
 		else if (nm.value == '') alert('이름을 입력하세요!');
 		else if (eml.value == '') alert('이메일을 입력하세요!');
+		else if (frm.chkuid.value == 'no') alert('아이디 중복검사를 하세요!');
 		else {
-			var frm = document.join;
 			frm.method = 'post';
 			frm.submit();
 		}

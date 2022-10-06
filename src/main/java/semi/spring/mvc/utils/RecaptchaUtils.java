@@ -49,7 +49,7 @@ public class RecaptchaUtils {
 		// success 키의 값을 알아냄 : json객체명.getXxx(키) -> Xxx : 받아올 객체타입
 		JSONObject json = new JSONObject(result);
 		boolean success = json.getBoolean("success");
-		//log.info(success);
+		//log.info(String.valueOf(success));
 		
 		// httpClient 객체 닫기
 		req.close();
