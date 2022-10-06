@@ -28,7 +28,7 @@ public class MemberDAOImpl implements MemberDAO {
 	
 	
 	public MemberDAOImpl(DataSource dataSource) {
-		simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("member").usingColumns("userid","name","email","regdate");
+		simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("member").usingColumns("userid","passwd","name","email");
 		
 		jdbcNamedTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}

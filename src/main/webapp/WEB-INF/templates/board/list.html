@@ -106,10 +106,9 @@ layout:decorate="~{fragments/layout}">
 						<a th:if="${cpg > 10}" th:href="@{'/list?cpg=' + ${cpg - 10} + ${fqry}}">[이전10]</a>
 						<a th:if="${cpg > 1}" th:href="@{'/list?cpg=' + ${cpg - 1} + ${fqry}}">[이전]</a>
 						<th:block th:each="i: ${#numbers.sequence(0,9)}">
-							<th:block th:if="${stpgn + i <= pages}">
+							<th:block th:if="${(stpgn + i) <= pages}">
 								<span th:text="${stpgn + i}" th:if="${cpg == (stpgn + i)}" class="cpage"></span>
 								<span th:unless="${cpg == (stpgn+i)}">
-									<!-- <a th:if="${stpgn + i <= pages}" th:href="@{/list(cpg=${stpgn + i})}">[[${stpgn + i}]]</a> -->
 									<a th:href="@{'/list?cpg=' + ${stpgn + i} + ${fqry}}">[[${stpgn + i}]]</a>
 								</span>
 							</th:block>
@@ -118,6 +117,8 @@ layout:decorate="~{fragments/layout}">
 						<a th:if="${cpg <= pages-10}" th:href="@{'/list?cpg=' + ${cpg + 10} + ${fqry}}">[다음10]</a> 
 						<a th:if="${cpg < pages}" th:href="@{'/list?cpg=' + ${pages} + ${fqry}}">[끝]</a>
 					</td>
+									<!-- <a th:if="${stpgn + i <= pages}" th:href="@{/list(cpg=${stpgn + i})}">[[${stpgn + i}]]</a> <!-- 112라인 span태그 사이 a태그 부분-->
+										
 					<!-- <td colspan="5" class="pgnav">
 						<a th:if="${cpg != 1}" th:href="@{/list(cpg=1,fkey=${param.fkey},fval=${param.fval})}">[처음]</a>
 						<a th:if="${cpg > 10}" th:href="@{/list(cpg=${cpg - 10},fkey=${param.fkey},fval=${param.fval})}">[이전10]</a>

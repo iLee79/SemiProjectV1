@@ -63,7 +63,7 @@ public class BoardController {
 		int perPage = 25;
 		if (cpg == null || cpg.equals("")) cpg = "1";
 		if (fkey == null) fkey = "";
-		if (fval == null) fval = "";
+		//if (fval == null) fval = "";
 		int cpage = Integer.parseInt(cpg);
 		int snum = (cpage - 1) * perPage; 
 		int stpgn = ((cpage - 1)/10)*10 + 1;		
@@ -116,4 +116,31 @@ public class BoardController {
 		return returnPage;
 	}
 	
+	@GetMapping("/upd")
+	public String modify(HttpSession sess, String bno, Model m) {
+		String returnPage = "board/update"; 
+		
+		if (sess.getAttribute("m") == null) {
+			returnPage = "redirect:/login";
+		} else {
+			m.addAttribute("bd", bsrv.readOneBoard(bno));
+		}
+		
+		return returnPage;
+		
+	}
+	
+	@PostMapping("/upd")
+	public String modifyok(HttpSession sess, BoardVO bvo) {
+		String returnPage = "redirect:/view?bno=" + bvo.getBno(); 
+		
+		if (sess.getAttribute("m") == null) {
+			returnPage = "redirect:/login";
+		} else {
+			bsrv.modifyBoard(bvo);
+		}
+		
+		return returnPage;
+		
+	}
 }
