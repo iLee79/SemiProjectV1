@@ -1,11 +1,13 @@
 package semi.spring.mvc.dao;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -15,6 +17,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import semi.spring.mvc.vo.MemberVO;
+import semi.spring.mvc.vo.Zipcode;
 
 @Repository("mdao")
 public class MemberDAOImpl implements MemberDAO {
@@ -25,6 +28,7 @@ public class MemberDAOImpl implements MemberDAO {
 	private NamedParameterJdbcTemplate jdbcNamedTemplate;
 	
 	//private RowMapper<MemberVO> memberMapper = BeanPropertyRowMapper.newInstance(MemberVO.class); // RowMapper 가져와서 쓸때
+	private RowMapper<Zipcode> zipcodeMapper = BeanPropertyRowMapper.newInstance(Zipcode.class);
 	
 	
 	public MemberDAOImpl(DataSource dataSource) {
@@ -92,6 +96,16 @@ public class MemberDAOImpl implements MemberDAO {
 		Object[] param = new Object[] {uid};
 
 		return jdbcTemplate.queryForObject(sql, param, Integer.class);
+	}
+
+	@Override
+	public List<Zipcode> selectZipcode(String dong) {
+		String sql = "select * from zipcode_2013 where dong like :dong";
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("dong", dong);		
+		
+		return jdbcNamedTemplate.query(sql, param, zipcodeMapper);
 	}
 	
 	/*
