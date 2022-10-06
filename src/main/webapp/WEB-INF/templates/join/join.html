@@ -69,9 +69,26 @@
 	let userid = document.querySelector("#uid");
 	userid.addEventListener('blur', ()=>{
 		let qry = '?uid=' + userid.value;
-		fetch('/checkuid' + qry) // ajax 호출
-			.then(response => response.text()) // 결과받음
-			.then(text => checkUserid(text));  // 함수에 넘김
+		
+		// ajax 구현하여 사용시
+		let req = new XMLHttpRequest();  // 1. ajax 객체 생성
+		req.onreadystatechange = () => { // 4. 응답 받은 후 처리 
+			// readyState : 0, 1(서버연결), 2(요청보냄), 3(요청처리), 4(처리완료,응답완료)
+			if (req.readyState == XMLHttpRequest.DONE){
+				if (req.status == 200){
+					let text = req.response;
+					checkUserid(text);
+				}
+			}
+		};
+		
+		req.open('get', '/checkuid' + qry); // 2. 서버 요청방식 정의
+		req.send();							// 3. 서버 요청보냄
+		
+		// ajax 구현없이 fetch사용시
+// 		fetch('/checkuid' + qry) // ajax 호출
+// 			.then(response => response.text()) // 결과받음
+// 			.then(text => checkUserid(text));  // 함수에 넘김
 	});
 	
 	function checkUserid(result){
