@@ -35,6 +35,11 @@
 	<logger name="org.springframework.jdbc">
 		<level value="debug" />
 	</logger>
+	
+	<!-- MyBatis 로깅 -->
+	<logger name="member">
+		<level value="debug" />
+	</logger>
 
 	<!-- Root Logger -->
 	<root>

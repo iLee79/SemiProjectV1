@@ -1,0 +1,11 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="member">
+
+	<insert id="insertMember" parameterType="semi.spring.mvc.vo.MemberVO" statementType="PREPARED">
+		insert into member(userid, passwd, name, email) values(#{userid}, #{passwd}, #{name}, #{email})
+	</insert>
+	
+</mapper>

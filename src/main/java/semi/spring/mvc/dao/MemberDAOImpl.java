@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -27,6 +28,10 @@ public class MemberDAOImpl implements MemberDAO {
 	private SimpleJdbcInsert simpleJdbcInsert;
 	private NamedParameterJdbcTemplate jdbcNamedTemplate;
 	
+	// MyBatis 설정
+	@Autowired
+	private SqlSession sqlSession;
+	
 	//private RowMapper<MemberVO> memberMapper = BeanPropertyRowMapper.newInstance(MemberVO.class); // RowMapper 가져와서 쓸때
 	private RowMapper<Zipcode> zipcodeMapper = BeanPropertyRowMapper.newInstance(Zipcode.class);
 	
@@ -39,9 +44,12 @@ public class MemberDAOImpl implements MemberDAO {
 	
 	@Override
 	public int insertMember(MemberVO mvo) {
-		SqlParameterSource params = new BeanPropertySqlParameterSource(mvo);
 		
-		return simpleJdbcInsert.execute(params);
+		return sqlSession.insert("member.insertMember", mvo); // Mybatis 사용시 
+		
+//		SqlParameterSource params = new BeanPropertySqlParameterSource(mvo);
+//		
+//		return simpleJdbcInsert.execute(params);
 	}
 	
 	/*
