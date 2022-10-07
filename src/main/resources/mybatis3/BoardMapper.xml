@@ -4,4 +4,45 @@
 
 <mapper namespace="board">
 
+	<insert id="insertBoard" statementType="PREPARED"
+		parameterType="semi.spring.mvc.vo.BoardVO">
+		insert into board(title, userid, contents) values(#{title}, #{userid}, #{contents})		
+	</insert>
+		
+	<select id="selectOneBoard" statementType="PREPARED"
+		parameterType="String" resultType="semi.spring.mvc.vo.BoardVO">
+		select * from board where bno = #{bno}
+	</select>
+	
+	<select id="selectBoard" statementType="PREPARED"
+		parameterType="map" resultType="semi.spring.mvc.vo.BoardVO">
+		select bno, title, userid, regdate, views from board		
+		<if test="fkey != ''">where ${fkey} like #{fval}</if>						
+		order by bno desc limit #{snum}, 25
+	</select>
+	
+	<select id="selectCountBoard" statementType="PREPARED"
+		parameterType="map" resultType="Integer">
+		select CEIL(count(bno)/25) pages from board		
+		<if test="fkey != ''">where ${fkey} like #{fval}</if> 
+	</select>
+	
+	<!-- 조회수 증가 -->
+	<update id="viewBoard" statementType="PREPARED"
+		parameterType="String">
+		update board set views = views + 1 where bno = #{bno}		
+	</update>
+	
+	<delete id="deleteBoard" statementType="PREPARED"
+		parameterType="String">
+		delete from board where bno = #{bno}
+	</delete>
+	
+	<update id="updateBoard" statementType="PREPARED"
+		parameterType="semi.spring.mvc.vo.BoardVO">	
+		update board set title = #{title}, contents = #{contents}, 
+		regdate = current_timestamp() where bno = #{bno}	
+	</update>
+	
+
 </mapper>

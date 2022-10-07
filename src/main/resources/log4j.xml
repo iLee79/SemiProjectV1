@@ -40,6 +40,9 @@
 	<logger name="member">
 		<level value="debug" />
 	</logger>
+	<logger name="board">
+		<level value="debug" />
+	</logger>
 
 	<!-- Root Logger -->
 	<root>
