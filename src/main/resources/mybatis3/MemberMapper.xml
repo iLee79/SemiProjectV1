@@ -4,8 +4,29 @@
     
 <mapper namespace="member">
 
-	<insert id="insertMember" parameterType="semi.spring.mvc.vo.MemberVO" statementType="PREPARED">
+	<insert id="insertMember" statementType="PREPARED"
+		parameterType="semi.spring.mvc.vo.MemberVO">
 		insert into member(userid, passwd, name, email) values(#{userid}, #{passwd}, #{name}, #{email})
 	</insert>
+	
+	<select id="selectOneMember" statementType="PREPARED"
+		parameterType="String" resultType="semi.spring.mvc.vo.MemberVO">
+		select userid,name,email,regdate from member where userid=#{userid} 
+	</select>
+	
+	<select id="selectCountMember" statementType="PREPARED"
+		parameterType="semi.spring.mvc.vo.MemberVO" resultType="Integer">
+		select count(mno) cnt from member where userid=#{userid} and passwd=#{passwd}
+	</select>
+	
+	<select id="selectCountUserid" statementType="PREPARED"
+		parameterType="String" resultType="Integer">
+		select count(mno) cnt from member where userid=#{userid}	
+	</select>
+	
+	<select id="selectZipcode" statementType="PREPARED"
+		parameterType="String" resultType="semi.spring.mvc.vo.Zipcode">
+		select * from zipcode_2013 where dong like #{dong}
+	</select>	
 	
 </mapper>

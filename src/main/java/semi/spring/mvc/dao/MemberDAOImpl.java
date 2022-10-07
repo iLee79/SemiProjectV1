@@ -23,15 +23,18 @@ import semi.spring.mvc.vo.Zipcode;
 @Repository("mdao")
 public class MemberDAOImpl implements MemberDAO {
 
+	/* // Mybatis 사용시 삭제
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	private SimpleJdbcInsert simpleJdbcInsert;
 	private NamedParameterJdbcTemplate jdbcNamedTemplate;
+	*/
 	
 	// MyBatis 설정
 	@Autowired
-	private SqlSession sqlSession;
+	private SqlSession sqlSession; // Mybatis 사용시 
 	
+	/* // Mybatis 사용시 삭제
 	//private RowMapper<MemberVO> memberMapper = BeanPropertyRowMapper.newInstance(MemberVO.class); // RowMapper 가져와서 쓸때
 	private RowMapper<Zipcode> zipcodeMapper = BeanPropertyRowMapper.newInstance(Zipcode.class);
 	
@@ -41,15 +44,18 @@ public class MemberDAOImpl implements MemberDAO {
 		
 		jdbcNamedTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
+	*/
 	
 	@Override
 	public int insertMember(MemberVO mvo) {
 		
 		return sqlSession.insert("member.insertMember", mvo); // Mybatis 사용시 
 		
-//		SqlParameterSource params = new BeanPropertySqlParameterSource(mvo);
-//		
-//		return simpleJdbcInsert.execute(params);
+		/* // Mybatis 사용시 삭제
+		SqlParameterSource params = new BeanPropertySqlParameterSource(mvo);
+		
+		return simpleJdbcInsert.execute(params);
+		*/
 	}
 	
 	/*
@@ -67,6 +73,10 @@ public class MemberDAOImpl implements MemberDAO {
 
 	@Override
 	public MemberVO selectOneMember(String userid) {
+		
+		return sqlSession.selectOne("member.selectOneMember",userid); //MyBatis 사용시
+		
+		/* // Mybatis 사용시 삭제
 		String sql = "select userid,name,email,regdate from member where userid=?";
 		
 		Object[] param = {userid};
@@ -86,34 +96,47 @@ public class MemberDAOImpl implements MemberDAO {
 		
 		//return jdbcNamedTemplate.queryForObject(sql, Collections.emptyMap(), memberMapper); // RowMapper 가져와서 쓸때				
 		return jdbcTemplate.queryForObject(sql, param, memberMapper); // RowMapper 직접 구현시
+		*/
 	}
 
 	@Override
 	public int selectOneMember(MemberVO m) {
+		
+		return sqlSession.selectOne("member.selectCountMember", m); //MyBatis 사용시
+		/* // Mybatis 사용시 삭제
 		String sql = "select count(mno) cnt from member where userid=? and passwd=?";
 		
 		Object[] params = {m.getUserid(), m.getPasswd()};		
 		
 		return jdbcTemplate.queryForObject(sql, params, Integer.class);
+		*/
 	}
 
 	@Override
 	public int selectCountUserid(String uid) {
+		
+		return sqlSession.selectOne("member.selectCountUserid",uid); //MyBatis 사용시
+		/* // Mybatis 사용시 삭제
 		String sql = "select count(mno) cnt from member where userid=?";
 		
 		Object[] param = new Object[] {uid};
 
 		return jdbcTemplate.queryForObject(sql, param, Integer.class);
+		*/
 	}
 
 	@Override
 	public List<Zipcode> selectZipcode(String dong) {
+		
+		return sqlSession.selectList("member.selectZipcode", dong); //MyBatis 사용시
+		/* // Mybatis 사용시 삭제
 		String sql = "select * from zipcode_2013 where dong like :dong";
 		
 		Map<String, Object> param = new HashMap<>();
 		param.put("dong", dong);		
 		
 		return jdbcNamedTemplate.query(sql, param, zipcodeMapper);
+		*/
 	}
 	
 	/*
