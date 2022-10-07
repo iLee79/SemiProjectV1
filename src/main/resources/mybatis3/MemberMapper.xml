@@ -27,6 +27,6 @@
 	<select id="selectZipcode" statementType="PREPARED"
 		parameterType="String" resultType="semi.spring.mvc.vo.Zipcode">
 		select * from zipcode_2013 where dong like #{dong}
-	</select>	
-	
+	</select>		
+
 </mapper>

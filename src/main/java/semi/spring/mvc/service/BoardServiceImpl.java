@@ -38,7 +38,7 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public int readCountBoard(String fkey, String fval) {
-
+		
 		return bdao.selectCountBoard(fkey, fval);
 	}
 

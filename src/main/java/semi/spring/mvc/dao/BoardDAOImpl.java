@@ -22,6 +22,7 @@ import semi.spring.mvc.vo.BoardVO;
 @Repository("bdao")
 public class BoardDAOImpl implements BoardDAO {
 	
+	@Autowired
 	private SqlSession sqlSession; // Mybatis 사용시 
 
 	/*
@@ -128,7 +129,7 @@ public class BoardDAOImpl implements BoardDAO {
 		Map<String, Object> params = new HashMap<>();
 		params.put("fkey", fkey);
 		params.put("fval", "%"+fval+"%");
-		
+				
 		return sqlSession.selectOne("board.selectCountBoard", params);
 		
 		/* // Mybatis 사용시 삭제

@@ -17,14 +17,14 @@
 	<select id="selectBoard" statementType="PREPARED"
 		parameterType="map" resultType="semi.spring.mvc.vo.BoardVO">
 		select bno, title, userid, regdate, views from board		
-		<if test="fkey != ''">where ${fkey} like #{fval}</if>						
+		<if test="fkey != '' and fkey != null">where ${fkey} like #{fval}</if>						
 		order by bno desc limit #{snum}, 25
 	</select>
 	
 	<select id="selectCountBoard" statementType="PREPARED"
 		parameterType="map" resultType="Integer">
 		select CEIL(count(bno)/25) pages from board		
-		<if test="fkey != ''">where ${fkey} like #{fval}</if> 
+		<if test="fkey != '' and fkey != null">where ${fkey} like #{fval}</if> 
 	</select>
 	
 	<!-- 조회수 증가 -->
