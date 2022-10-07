@@ -1,5 +1,12 @@
 package semi.spring.mvc.vo;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@Data
+@NoArgsConstructor
+@ToString
 public class Zipcode {
 	private String zipcode;
 	private String sido;
@@ -9,6 +16,7 @@ public class Zipcode {
 	private String bunji;
 	private String seq;
 	
+	/* // lombok 사용시 제거
 	public String getZipcode() {
 		return zipcode;
 	}
@@ -51,5 +59,6 @@ public class Zipcode {
 	public void setSeq(String seq) {
 		this.seq = seq;
 	}
+	*/
 	
 }

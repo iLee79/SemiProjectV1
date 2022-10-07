@@ -1,5 +1,12 @@
 package semi.spring.mvc.vo;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@Data
+@NoArgsConstructor
+@ToString
 public class MemberVO {
 	private String mno;
 	private String userid;
@@ -8,6 +15,7 @@ public class MemberVO {
 	private String email;
 	private String regdate;
 	
+	/*// lombok 사용시 제거
 	public MemberVO() {
 		
 	}
@@ -54,5 +62,6 @@ public class MemberVO {
 		return "MemberVO [mno=" + mno + ", userid=" + userid + ", passwd=" + passwd + ", name=" + name + ", email="
 				+ email + ", regdate=" + regdate + "]";
 	}
+	*/
 		
 }

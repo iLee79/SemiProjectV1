@@ -1,5 +1,12 @@
 package semi.spring.mvc.vo;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@Data
+@NoArgsConstructor
+@ToString
 public class BoardVO {
 	private String bno;
 	private String title;
@@ -8,6 +15,7 @@ public class BoardVO {
 	private String views;
 	private String contents;
 	
+	/* // lombok 사용시 제거
 	public BoardVO() {
 
 	}
@@ -56,6 +64,7 @@ public class BoardVO {
 		
 		return result;
 	}
+	*/
 			
 	
 }
