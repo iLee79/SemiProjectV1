@@ -15,7 +15,7 @@ public class MemberVO {
 	private String email;
 	private String regdate;
 	
-	/*// lombok 사용시 제거
+	/* // lombok 사용시 제거
 	public MemberVO() {
 		
 	}
